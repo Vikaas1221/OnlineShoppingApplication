@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/top_layout"
+        android:background="@android:color/holo_blue_bright">
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/frame_container"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:civ_border_width="1dp"
+            android:src="@drawable/ic_local_grocery_store_black_24dp"
+            android:id="@+id/profile_pic"
+            app:civ_border_color="#000000" />
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="39dp"
+                android:layout_marginLeft="78dp"
+
+                android:src="@drawable/ic_add_circle_black_24dp" />
+        </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Vikas Jangra"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:id="@+id/user_name"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/frame_container"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frame_container"
+
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="14dp"
+            android:layout_toRightOf="@+id/user_name"
+            android:background="@drawable/ic_create_black_24dp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_below="@+id/top_layout"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_margin="8dp"
+            android:id="@+id/profile_recycler"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

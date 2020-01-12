@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/ghjf"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progress"
+        style="@style/SpinKitView.Large.Circle"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/colorAccent" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/shopCatgoryRecyclerView"
+        android:layout_above="@+id/placeorder"
+
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <Button
+        android:layout_width="match_parent"
+        android:text="place order"
+        android:id="@+id/placeorder"
+        android:background="@android:color/holo_green_light"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
