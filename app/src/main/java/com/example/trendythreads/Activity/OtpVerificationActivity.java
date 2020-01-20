@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.trendythreads.R;
+import com.github.ybq.android.spinkit.sprite.Sprite;
+import com.github.ybq.android.spinkit.style.DoubleBounce;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +44,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
     FirebaseAuth mauth;
     FirebaseUser currentUser;
     String mobile;
+    ProgressBar progressBar;
     FirebaseFirestore db=FirebaseFirestore.getInstance();
     CollectionReference collectionReference=db.collection("Users");
 
@@ -50,9 +54,12 @@ public class OtpVerificationActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp_verification);
+        progressBar=findViewById(R.id.progress);
+        Sprite doublebounce=new DoubleBounce();
+        progressBar.setIndeterminateDrawable(doublebounce);
         verificationCode=findViewById(R.id.verificationCode);
         submitButton=findViewById(R.id.submitOtp);
-        resendOtp=findViewById(R.id.ResendOtp);
+       // resendOtp=findViewById(R.id.ResendOtp);
         mauth=FirebaseAuth.getInstance();
 
          mobile= Trendy.getInstance().getMobileNo();
@@ -63,14 +70,17 @@ public class OtpVerificationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v)
             {
+                progressBar.setVisibility(View.VISIBLE);
               String code=verificationCode.getText().toString().trim();
               if (code.isEmpty()||code.length()<6)
               {
                   verificationCode.setError("Invalid code");
                   verificationCode.requestFocus();
+                  progressBar.setVisibility(View.INVISIBLE);
                   return;
               }
               verifyVerificationCode(code);
+              progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -89,8 +99,11 @@ public class OtpVerificationActivity extends AppCompatActivity {
             String code=phoneAuthCredential.getSmsCode();
             if (code!=null)
             {
+
                 verificationCode.setText(code);
+                progressBar.setVisibility(View.VISIBLE);
                 verifyVerificationCode(code);
+//                progressBar.setVisibility(View.INVISIBLE);
             }
         }
 
@@ -98,6 +111,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
         public void onVerificationFailed(FirebaseException e)
         {
             Toast.makeText(getApplicationContext(),e.getMessage().toString(),Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.INVISIBLE);
 
         }
 

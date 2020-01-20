@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_height="wrap_content"
+<RelativeLayout android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:id="@+id/frame"
+        android:layout_above="@+id/totalbilllayout"
+        android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:id="@+id/cartRecycler"
@@ -25,31 +27,17 @@
         android:layout_width="match_parent"
         android:id="@+id/totalbilllayout"
         android:visibility="invisible"
-        android:background="@android:color/darker_gray"
         android:layout_alignParentBottom="true"
         android:layout_height="70dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:id="@+id/totalbill"
-            android:text="Rs 149.50"
-            android:layout_marginLeft="20sp"
-            android:textStyle="bold"
-            android:layout_centerVertical="true"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:layout_width="180dp"
-            android:text="checkout"
-            android:layout_centerVertical="true"
-            android:background="@drawable/rectangle"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginRight="30sp"
+
+        <com.ncorti.slidetoact.SlideToActView
             android:id="@+id/checkout"
             android:layout_alignParentRight="true"
             android:visibility="visible"
-            android:layout_height="wrap_content"/>
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            app:outer_color="@color/colorPrimary"
+            app:text="Pay Now" />
 
     </RelativeLayout>
 

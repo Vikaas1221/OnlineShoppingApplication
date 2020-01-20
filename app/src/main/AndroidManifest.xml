@@ -3,6 +3,7 @@
     package="com.example.trendythreads">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name="util.Trendy"
@@ -12,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".dashbord"></activity>
+        <activity android:name=".Adapter.orderhistory"></activity>
+        <activity android:name=".Activity.paymentactivity"></activity>
+        <activity android:name=".dashbord" />
         <activity android:name=".Activity.Main2Activity" />
         <activity android:name=".Activity.testingActivity" />
         <activity android:name=".Activity.shopCategoryActivity" />

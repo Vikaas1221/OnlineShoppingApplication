@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,7 +63,8 @@ public class shopAdapter extends RecyclerView.Adapter<shopAdapter.ViewHolder>
         obj1.setI(position);
         holder.shopname.setText(obj.getName());
         Picasso.get().load(obj.getUrl()).into(holder.shopimg);
-        holder.shopname.setOnClickListener(new View.OnClickListener()
+
+        holder.shop_layout.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -92,12 +94,14 @@ public class shopAdapter extends RecyclerView.Adapter<shopAdapter.ViewHolder>
     {
         ImageView shopimg;
         TextView shopname;
+        LinearLayout shop_layout;
 
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);
             shopimg=itemView.findViewById(R.id.shopimage);
             shopname=itemView.findViewById(R.id.shopName);
+            shop_layout=itemView.findViewById(R.id.shop_linear_layout);
 
         }
     }

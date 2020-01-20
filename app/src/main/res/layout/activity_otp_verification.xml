@@ -1,31 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_width="match_parent"
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/gradient"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:background="@drawable/otp"
+        android:layout_height="wrap_content"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+
+        app:cardCornerRadius="@dimen/_30sdp"
+        android:layout_height="wrap_content">
     <EditText
         android:layout_width="match_parent"
         android:hint="Enter verification code"
+        android:background="@color/white"
+        android:inputType="number"
+        android:textStyle="italic"
+
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="@dimen/_40sdp"
         android:id="@+id/verificationCode"
-        android:layout_height="wrap_content"/>
+        android:layout_height="@dimen/_40sdp"/>
+    </androidx.cardview.widget.CardView>
     <Button
-        android:layout_width="match_parent"
-        android:text="Submit"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bvc"
         android:id="@+id/submitOtp"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:text="Didn't recieve Otp?"
-        android:textSize="18sp"
-        android:layout_height="wrap_content"/>
-    <TextView
+        android:layout_height="@dimen/_50sdp"/>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/progress"
+        style="@style/SpinKitView.Large.Circle"
         android:layout_width="wrap_content"
-        android:text="Resend Otp"
-        android:id="@+id/ResendOtp"
-        android:textSize="16sp"
-        android:textColor="@android:color/holo_red_dark"
-        android:layout_height="wrap_content"/>
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:SpinKit_Color="@color/colorAccent" />
 
 
 </LinearLayout>

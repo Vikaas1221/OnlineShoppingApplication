@@ -2,6 +2,7 @@ package com.example.trendythreads.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.trendythreads.AllModel.mnb;
 import com.example.trendythreads.R;
 import com.example.trendythreads.AllModel.model;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -43,14 +46,16 @@ import util.Trendy;
 //import static com.example.trendythreads.Activity.testingActivity.cartshopid;
 import static com.example.trendythreads.Activity.testingActivity.cartid;
 import static com.example.trendythreads.Activity.testingActivity.ds;
+import static com.example.trendythreads.Activity.testingActivity.paynow;
 import static com.example.trendythreads.Activity.testingActivity.reference1;
+import static com.example.trendythreads.fragment.cart_fragment.currentUserid;
 
 public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.ViewHolder>
 {
     String cartshopid;
     Context context;
     int i,j=0;
-    String quant;
+    String docid;
     String shopi;
     int qu;
     String currentquantity,currentquantity2;
@@ -108,6 +113,25 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
         holder.itemprice.setText("Rs "+obj.getItemprice()+"perKg");
         Picasso.get().load(obj.getItemImage()).into(holder.itemImg);
         final String str=obj.getItemName();
+      //  String price=obj.getItemprice();
+
+
+        reference.whereEqualTo("userid",userid).whereEqualTo("itemname",str)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        assert queryDocumentSnapshots != null;
+                        for (QueryDocumentSnapshot documentSnapshot:queryDocumentSnapshots)
+                        {
+                            String q=documentSnapshot.getString("Quantity");
+                            holder.quantity.setText(q);
+                        }
+                    }
+                });
+
+
+
+
 
 
         reference.whereEqualTo("userid",userid)
@@ -120,6 +144,7 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
                         }
                     }
                 });
+
 
 
 
@@ -154,6 +179,10 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
             @Override
             public void onClick(View v)
             {
+                final String quantity="1";
+                holder.quantity.setText(quantity);
+
+
 
 
 
@@ -168,31 +197,31 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
                     imgurl = obj.getItemImage();
                     itemname = obj.getItemName();
                     itemprice = obj.getItemprice();
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
-                    View view = LayoutInflater.from(mcontext)
-                            .inflate(R.layout.addtocart_dialog_layout, null);
-                    final EditText e1 = view.findViewById(R.id.quantity);
-                    final Button sublit = view.findViewById(R.id.submit);
-                    final AlertDialog dialog = builder.create();
-                    dialog.setView(view);
-                    dialog.show();
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
+//                    View view = LayoutInflater.from(mcontext)
+//                            .inflate(R.layout.addtocart_dialog_layout, null);
+//                    final EditText e1 = view.findViewById(R.id.quantity);
+//                    final Button sublit = view.findViewById(R.id.submit);
+//                    final AlertDialog dialog = builder.create();
+//                    dialog.setView(view);
+//                    dialog.show();
 
-                    sublit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            e1Quantity = e1.getText().toString().trim();
-                            if (e1Quantity.isEmpty()) {
-                                e1.setError("Enter Quantity");
-                                e1.requestFocus();
-                                return;
-                            }
-                            Map<String, String> map = new HashMap<>();
+//                    sublit.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//
+//                            e1Quantity = e1.getText().toString().trim();
+//                            if (e1Quantity.isEmpty()) {
+//                                e1.setError("Enter Quantity");
+//                                e1.requestFocus();
+//                                return;
+//                            }
+                            Map<String, Object> map = new HashMap<>();
                             map.put("imgUrl", imgurl);
                             map.put("itemname", itemname);
                             map.put("itemprice", itemprice);
                             map.put("userid", userid);
-                            map.put("Quantity", e1Quantity);
+                            map.put("Quantity", quantity);
                             map.put("shopid", shopId);
                             reference.add(map)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -203,7 +232,8 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
                                             id = documentReference.getId();
                                             holder.addtolist.setVisibility(View.GONE);
                                             holder.operation.setVisibility(View.VISIBLE);
-                                            i++;
+                                            holder.quantity.setText(quantity);
+                                           // i++;
 
                                         }
                                     })
@@ -214,13 +244,12 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
                                             holder.addtolist.setVisibility(View.VISIBLE);
                                         }
                                     });
-                            dialog.dismiss();
+                          //  dialog.dismiss();
 
 
                         }
 
-                    });
-                }
+         //           });
                 else
                 {
                     Toast.makeText(context,"You are not allowed to select from different shop",Toast.LENGTH_SHORT).show();
@@ -228,55 +257,155 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
 
 
 
+
+
             }
         });
-        holder.removeItem.setOnClickListener(new View.OnClickListener()
+
+        holder.incrementQ.setOnClickListener(new View.OnClickListener()
         {
+
             @Override
             public void onClick(View v)
             {
                 String a=obj.getItemName();
-                reference.whereEqualTo("itemname",a)
-                        .addSnapshotListener(new EventListener<QuerySnapshot>()
+                reference.whereEqualTo("userid",userid).whereEqualTo("itemname",a)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
                         {
                             @Override
-                            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e)
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots)
                             {
-                                for (QueryDocumentSnapshot documentSnapshot:queryDocumentSnapshots)
+                                if (!queryDocumentSnapshots.isEmpty())
+                                for(QueryDocumentSnapshot documentSnapshot:queryDocumentSnapshots)
                                 {
-                                    String id=documentSnapshot.getId();
-                                    ref=reference.document(id);
-                                    ref.delete()
-                                            .addOnSuccessListener(new OnSuccessListener<Void>()
-                                            {
-                                                @Override
-                                                public void onSuccess(Void aVoid)
-                                                {
-                                                    cartid=null;
-                                                    Toast.makeText(context,"deleted sucessfully",Toast.LENGTH_SHORT).show();
+                                    String p_quantity=documentSnapshot.getString("Quantity");
+                                    int i_quantity= Integer.parseInt(p_quantity);
+                                    i_quantity=i_quantity+1;
+                                    String s_quantity=String.valueOf(i_quantity);
+                                   docid= documentSnapshot.getId();
+
+                                   ref=reference.document(docid);
+                                    final int finalI_quantity = i_quantity;
+                                    ref.update("Quantity",s_quantity)
+                                           .addOnCompleteListener(new OnCompleteListener<Void>()
+                                           {
+                                               @Override
+                                               public void onComplete(@NonNull Task<Void> task)
+                                               {
+                                                   if (task.isSuccessful())
+                                                   {
+                                                     //  holder.quantity.setText(finalI_quantity);
+                                                       Toast.makeText(context,"updated sucessgully",Toast.LENGTH_SHORT).show();
+                                                   }
+                                               }
+                                           });
 
 
-                                                    holder.operation.setVisibility(View.GONE);
-                                                  //  holder.removeItem.setVisibility(View.INVISIBLE);
-                                                    holder.addtolist.setVisibility(View.VISIBLE);
-                                                    j++;
-
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener()
-                                            {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e)
-                                                {
-                                                    Toast.makeText(context,e.getMessage().toString(),Toast.LENGTH_SHORT).show();
-
-                                                }
-                                            });
                                 }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
                             }
                         });
             }
         });
+
+
+        holder.decrementQ.setOnClickListener(new View.OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v)
+            {
+                String qwe=holder.quantity.getText().toString();
+                final String a=obj.getItemName();
+                reference.whereEqualTo("userid",userid).whereEqualTo("itemname",a)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>()
+                        {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots)
+                            {
+                                if (!queryDocumentSnapshots.isEmpty())
+                                    for(QueryDocumentSnapshot documentSnapshot:queryDocumentSnapshots)
+                                    {
+                                        String p_quantity=documentSnapshot.getString("Quantity");
+                                        int i_quantity= Integer.parseInt(p_quantity);
+                                            i_quantity = i_quantity - 1;
+                                            if (i_quantity>0)
+                                            {
+                                            String s_quantity = String.valueOf(i_quantity);
+                                            docid = documentSnapshot.getId();
+
+                                            ref = reference.document(docid);
+                                            final int finalI_quantity = i_quantity;
+                                            ref.update("Quantity", s_quantity)
+                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                //  holder.quantity.setText(finalI_quantity);
+                                                                Toast.makeText(context, "updated sucessgully", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                        else
+                                        {
+                                            holder.addtolist.setVisibility(View.VISIBLE);
+                                            holder.operation.setVisibility(View.GONE);
+
+                                            reference.whereEqualTo("itemname", a).whereEqualTo("userid", userid)
+                                                    .get()
+                                                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                                        @Override
+                                                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                            for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                                                                id = documentSnapshot.getId();
+                                                                DocumentReference documentReference;
+                                                                documentReference = reference.document(id);
+                                                                documentReference.delete()
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void aVoid) {
+
+
+                                                                                Toast.makeText(context, "removed sucessfully", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        });
+                                                            }
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Toast.makeText(context, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
+                                          //  holder.operation.setVisibility(View.INVISIBLE);
+                                          //  holder.quantity.setText(quantity);
+                                        }
+
+
+                                    }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
+            }
+        });
+
+
+
+
 
 
 
@@ -292,8 +421,8 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        TextView itemname;
-        ImageView itemImg;
+        TextView itemname,quantity;
+        ImageView itemImg,incrementQ,decrementQ;
         TextView itemprice;
         TextView addtolist;
         ImageView increment,decrement,removeItem;
@@ -309,6 +438,9 @@ public class subCategoryAdapter extends RecyclerView.Adapter<subCategoryAdapter.
             increment=itemView.findViewById(R.id.increment);
             operation=itemView.findViewById(R.id.operation);
             removeItem=itemView.findViewById(R.id.remove);
+            incrementQ=itemView.findViewById(R.id.increment);
+            decrementQ=itemView.findViewById(R.id.decrement);
+            quantity=itemView.findViewById(R.id.pricecart);
 
         }
     }

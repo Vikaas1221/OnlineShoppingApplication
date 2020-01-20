@@ -16,8 +16,9 @@
 
             <ImageView
                 android:layout_width="130dp"
+                android:scaleType="centerCrop"
                 android:id="@+id/itemimage"
-                android:layout_height="150dp"/>
+                android:layout_height="130dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_toRightOf="@+id/itemimage"
@@ -45,15 +46,34 @@
                 android:textSize="18sp"
                 android:text="Quantity:"
                 android:layout_height="wrap_content"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:id="@+id/pricecart2"
+                android:layout_toRightOf="@+id/quantitycart"
+                android:layout_below="@+id/itemnamecart"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/decrement"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/ic_remove_black_24dp"
+                    android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/pricecart"
-                android:layout_toRightOf="@+id/quantitycart"
-                android:layout_below="@+id/itemnamecart"
                 android:layout_margin="10sp"
+                android:layout_toRightOf="@+id/decrement"
                 android:textSize="18sp"
-                android:text="Quantity:"
+                android:text="2"
                 android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/pricecart"
+                    android:id="@+id/increment"
+                    android:src="@android:drawable/ic_input_add"
+                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_toRightOf="@+id/itemimage"
@@ -67,7 +87,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_toRightOf="@+id/pricetext"
-                android:layout_below="@+id/pricecart"
+                android:layout_below="@+id/quantitycart"
                 android:layout_margin="10dp"
                 android:textSize="18sp"
                 android:text="60"

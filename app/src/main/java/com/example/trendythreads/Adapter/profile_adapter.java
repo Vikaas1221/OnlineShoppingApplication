@@ -1,10 +1,12 @@
 package com.example.trendythreads.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,11 +38,26 @@ public class profile_adapter extends RecyclerView.Adapter<profile_adapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position)
     {
-        profile_model obj=arrayList_profile.get(position);
+        final profile_model obj=arrayList_profile.get(position);
         holder.imageView.setImageResource(obj.getImg());
         holder.textView.setText(obj.getName());
+
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                if (position==0)
+                {
+                    Intent intent=new Intent(context,orderhistory.class);
+                    context.startActivity(intent);
+
+                }
+            }
+        });
+
 
     }
 
@@ -54,11 +71,13 @@ public class profile_adapter extends RecyclerView.Adapter<profile_adapter.ViewHo
     {
         ImageView imageView;
         TextView textView;
+        RelativeLayout relativeLayout;
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);
             imageView=itemView.findViewById(R.id.order_img);
             textView=itemView.findViewById(R.id.list_name);
+            relativeLayout=itemView.findViewById(R.id.profile_layout);
         }
     }
 }

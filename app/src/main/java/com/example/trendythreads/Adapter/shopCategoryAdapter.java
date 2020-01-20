@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,7 +46,7 @@ public class shopCategoryAdapter extends RecyclerView.Adapter<shopCategoryAdapte
         final shopcatgory obj=arrayList.get(position);
         holder.itemname.setText(obj.getItemName());
         Picasso.get().load(obj.getItemImage()).into(holder.itemImg);
-        holder.itemname.setOnClickListener(new View.OnClickListener()
+        holder.shopCategoryLayout.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
@@ -71,12 +72,14 @@ public class shopCategoryAdapter extends RecyclerView.Adapter<shopCategoryAdapte
     {
         TextView itemname;
         ImageView itemImg;
+        LinearLayout shopCategoryLayout;
 
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);
             itemname=itemView.findViewById(R.id.itemName);
             itemImg=itemView.findViewById(R.id.itemimage);
+            shopCategoryLayout=itemView.findViewById(R.id.shopCategory_linear_layout);
         }
     }
 }
